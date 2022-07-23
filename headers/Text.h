@@ -8,13 +8,14 @@
 #include <map>
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
+
 
 #include <glm/glm.hpp>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include "Window.h"
 #include "Shader.h"
 #include "Font.h"
 #include "Color.h"
@@ -26,8 +27,11 @@ public:
 
     void setFont(Font* _font);
     void setPosition(glm::vec2 pos);
+    void setScale(float _scale);
+    void setText(std::string _text);
+    void setColor(Color _color);
 
-    void draw(GLFWwindow* window);
+    void draw(Window* window);
 private:
     void createCharacters();
     static GLuint createTexture(FT_Bitmap& bitmap);

@@ -12,8 +12,8 @@
 #include FT_FREETYPE_H
 
 enum FONT_TYPE {
-    CUSTOM,
-    WINDOWS_LIBRARY
+    CUSTOM_FONT,
+    WINDOWS_LIBRARY,
 };
 
 class Font {

@@ -21,8 +21,8 @@ Rectangle::Rectangle(glm::vec2 _size, glm::vec2 pos, Shader& _shader, Color _col
     init();
 }
 
-void Rectangle::draw(const Camera2D& camera) {
-    projection = camera.getProjectionMatrix();
+void Rectangle::draw(Window* window) {
+    projection = window->camera.getProjectionMatrix();
 
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));

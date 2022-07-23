@@ -10,13 +10,14 @@
 #include "Color.h"
 #include "Shader.h"
 #include "Camera2D.h"
+#include "Window.h"
 
 class Rectangle {
 public:
     Rectangle(glm::vec2 _size, glm::vec2 pos, const std::string& vertexPath, const std::string& fragmentPath, Color _color);
     Rectangle(glm::vec2 _size, glm::vec2 pos, Shader& _shader, Color _color);
 
-    void draw(const Camera2D& camera);
+    void draw(Window* window);
 
     void setSize(glm::vec2 _size);
     void setPosition(glm::vec2 _position);

@@ -8,9 +8,19 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+enum LOOK_AT {
+    CENTER,
+    CUSTOM_POINT,
+    TOP_LEFT,
+    TOP_RIGHT,
+    BOTTOM_LEFT,
+    BOTTOM_RIGHT
+};
+
 class Camera2D {
 public:
     Camera2D(glm::vec2 _focusPoint, float _zoom, int _screenWidth, int _screenHeight);
+    Camera2D(LOOK_AT _lookAt, float _zoom, int _screenWidth, int _screenHeight);
 
     [[nodiscard]] glm::mat4 getProjectionMatrix() const;
 
@@ -21,6 +31,7 @@ public:
 private:
     float zoom;
     glm::vec2 focusPoint{};
+    LOOK_AT lookAt = CENTER;
 
     int screenWidth;
     int screenHeight;

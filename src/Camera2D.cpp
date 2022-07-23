@@ -9,6 +9,15 @@ Camera2D::Camera2D(glm::vec2 _focusPoint, float _zoom, int _screenWidth, int _sc
     zoom = _zoom;
     screenWidth = _screenWidth;
     screenHeight = _screenHeight;
+    lookAt = CUSTOM_POINT;
+}
+
+Camera2D::Camera2D(LOOK_AT lookAt, float _zoom, int _screenWidth, int _screenHeight) {
+    zoom = _zoom;
+    screenWidth = _screenWidth;
+    screenHeight = _screenHeight;
+    lookAt = CENTER;
+    focusPoint = glm::vec2(_screenWidth/2, _screenHeight/2);
 }
 
 glm::mat4 Camera2D::getProjectionMatrix() const {
@@ -37,4 +46,7 @@ void Camera2D::setFocusPoint(glm::vec2 _focusPoint){
 void Camera2D::setScreenSize(int width, int height) {
     screenHeight = height;
     screenWidth = width;
+
+    if(lookAt == CENTER)
+        setFocusPoint({screenWidth/2, screenHeight/2});
 }

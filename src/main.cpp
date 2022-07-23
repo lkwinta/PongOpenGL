@@ -1,9 +1,4 @@
 #include <iostream>
-#include <chrono>
-#include <map>
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp>
 
@@ -11,14 +6,13 @@
 #include FT_FREETYPE_H
 
 #include "Shader.h"
-#include "Camera2D.h"
 #include "Color.h"
 #include "Rectangle.h"
 #include "Font.h"
 #include "Text.h"
+#include "Window.h"
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow* window, double deltaTime);
+void processInput(Window* window);
 
 Rectangle* leftPaddle;
 Rectangle* ball;
@@ -26,75 +20,44 @@ Rectangle* rightPaddle;
 Rectangle* background;
 
 int main() {
-
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Pong Open GL", nullptr, nullptr);
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
-    if (window == nullptr)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
+    auto window = new Window(800, 600, "Pong OpenGL");
 
     Shader rectShader("shaders/vertexShader.vert", "shaders/fragmentShader.frag");
 
-    background = new Rectangle({800-4, 600-4}, {400, 300}, rectShader, Color(40, 40, 40));
-    leftPaddle = new Rectangle({30, 100}, {50, 300}, rectShader, Colors::White);
+    background = new Rectangle({800, 600}, {400, 300}, rectShader, Color(40, 40, 40));
+    leftPaddle = new Rectangle({20, 100}, {50, 300}, rectShader, Colors::White);
     ball = new Rectangle({10, 10}, {400, 300}, rectShader, Colors::White);
-    rightPaddle = new Rectangle({30, 100}, {750, 300}, rectShader, Colors::White);
+    rightPaddle = new Rectangle({20, 100}, {750, 300}, rectShader, Colors::White);
 
-    std::chrono::time_point<std::chrono::high_resolution_clock> t1;
-    std::chrono::time_point<std::chrono::high_resolution_clock> t2;
+    Font f_casc(WINDOWS_LIBRARY, "CascadiaCode.ttf", 20);
+    Font f_roboto(CUSTOM_FONT, "fonts/Roboto-Regular.ttf", 48);
 
-    Camera2D camera(glm::vec2(400, 300), 1.0f, 800, 600);
+    Text score(&f_roboto, "3 : 0");
+    score.setPosition({350, 550});
+    score.setText("4 : 0");
 
-    Font f_arial(WINDOWS_LIBRARY, "arialbd.ttf", 48);
-    Text t(&f_arial, "3 : 0");
-    t.setPosition({350, 550});
+    Text fps(&f_casc, "2344");
+    fps.setPosition({0, 580});
+    fps.setColor(Colors::Yellow);
 
-    Font f_casc(WINDOWS_LIBRARY, "CascadiaCode.ttf", 48);
-    t.setFont(&f_casc);
+    while (window->isOpen()){
+        window->clearAndPollEvents();
 
-    while (!glfwWindowShouldClose(window)){
-        t1 = std::chrono::high_resolution_clock::now();
+        background->draw(window);
+        leftPaddle->draw(window);
+        ball->draw(window);
+        rightPaddle->draw(window);
 
-        double deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(t1 - t2).count();
+        fps.setText(std::to_string((int)(60/window->deltaTime)));
 
-        glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        score.draw(window);
+        fps.draw(window);
 
-        int width, height;
-        glfwGetWindowSize(window, &width, &height);
-        camera.setScreenSize(width, height);
 
-        background->draw(camera);
-        leftPaddle->draw(camera);
-        ball->draw(camera);
-        rightPaddle->draw(camera);
-
-        t.draw(window);
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-        processInput(window, deltaTime);
-
-        t2 = t1;
+        processInput(window);
     }
 
-    glfwDestroyWindow(window);
+    delete window;
 
     delete leftPaddle;
     delete ball;
@@ -104,13 +67,13 @@ int main() {
     return 0;
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height){
-    glViewport(0, 0, width, height);
-}
-
-void processInput(GLFWwindow* window, double deltaTime){
-   if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        leftPaddle->setPosition({leftPaddle->getPosition().x, leftPaddle->getPosition().y + 1.0f});
-    if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        leftPaddle->setPosition({leftPaddle->getPosition().x, leftPaddle->getPosition().y - 1.0f});
+void processInput(Window* window){
+   if(window->queryKeyState(GLFW_KEY_W) == GLFW_PRESS)
+       leftPaddle->setPosition({leftPaddle->getPosition().x, leftPaddle->getPosition().y + 2.0f});
+   if(window->queryKeyState(GLFW_KEY_S) == GLFW_PRESS)
+       leftPaddle->setPosition({leftPaddle->getPosition().x, leftPaddle->getPosition().y - 2.0f});
+   if(window->queryKeyState(GLFW_KEY_UP) == GLFW_PRESS)
+       rightPaddle->setPosition({rightPaddle->getPosition().x, rightPaddle->getPosition().y + 2.0f});
+   if(window->queryKeyState(GLFW_KEY_DOWN) == GLFW_PRESS)
+       rightPaddle->setPosition({rightPaddle->getPosition().x, rightPaddle->getPosition().y - 2.0f});
 }

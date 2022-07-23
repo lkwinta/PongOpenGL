@@ -88,9 +88,8 @@ void Text::setPosition(glm::vec2 pos) {
     position = pos;
 }
 
-void Text::draw(GLFWwindow *window) {
-    glfwGetWindowSize(window, &screenWidth, &screenHeight);
-    projection = glm::ortho(0.0f, (float)screenWidth, 0.0f, (float)screenHeight, -3.0f, 100.0f);
+void Text::draw(Window *window) {
+    projection = glm::ortho(0.0f, (float)window->windowWidth, 0.0f, (float)window->windowHeight, -3.0f, 100.0f);
 
     shader->use();
     shader->setVec3("textColor", textColor);
@@ -140,5 +139,13 @@ void Text::draw(GLFWwindow *window) {
 
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Text::setText(std::string _text) {
+    text = std::move(_text);
+}
+
+void Text::setColor(Color _color) {
+    textColor = _color;
 }
 

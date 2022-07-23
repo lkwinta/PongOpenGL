@@ -34,7 +34,7 @@ include_directories(libraries/glad/include)
 include_directories(libraries/glm)
 
 #lis all source files
-set(SOURCE_FILES libraries/glad/src/glad.c src/main.cpp src/Shader.cpp src/Camera2D.cpp headers/Camera2D.h src/Rectangle.cpp headers/Rectangle.h headers/Color.h headers/Shader.h src/Text.cpp headers/Text.h src/Font.cpp headers/Font.h)
+set(SOURCE_FILES libraries/glad/src/glad.c src/main.cpp src/Shader.cpp src/Camera2D.cpp headers/Camera2D.h src/Rectangle.cpp headers/Rectangle.h headers/Color.h headers/Shader.h src/Text.cpp headers/Text.h src/Font.cpp headers/Font.h src/Window.cpp headers/Window.h)
 
 add_executable(PongOpenGL ${SOURCE_FILES})
 
