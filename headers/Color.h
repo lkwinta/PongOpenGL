@@ -59,6 +59,8 @@ namespace Colors {
     [[maybe_unused]] const Color White = Color(255, 255, 255);
     [[maybe_unused]] const Color Black = Color(0, 0, 0);
     [[maybe_unused]] const Color Yellow = Color(255, 255, 0);
+    [[maybe_unused]] const Color Magenta = Color(255, 0, 255);
+    [[maybe_unused]] const Color Cyan = Color(0, 255, 255);
 }
 
 

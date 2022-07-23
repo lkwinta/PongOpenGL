@@ -4,11 +4,12 @@
 
 #include "Window.h"
 
-Window::Window(int _width, int _height, const std::string &name) : camera(CENTER, 1.0f, _width, _height){
+Window::Window(int _width, int _height, const std::string &name, bool resizeable) : camera(CENTER, 1.0f, _width, _height){
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_RESIZABLE, resizeable);
 
     window = glfwCreateWindow(_width, _height, name.c_str(), nullptr, nullptr);
 
@@ -62,4 +63,4 @@ Window::~Window() {
 
 int Window::queryKeyState(int keyCode) {
     return glfwGetKey(window, keyCode);
-};
+}

@@ -20,7 +20,7 @@
 
 class Window {
 public:
-    Window(int _width, int _height, const std::string& name);
+    Window(int _width, int _height, const std::string& name, bool resizeable);
     ~Window();
 
     Camera2D camera;
