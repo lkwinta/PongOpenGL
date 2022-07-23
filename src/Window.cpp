@@ -42,6 +42,8 @@ bool Window::isOpen() {
 }
 
 void Window::clearAndPollEvents() {
+    glfwMakeContextCurrent(window);
+
     t2 = t1;
     t1 = std::chrono::high_resolution_clock::now();
     deltaTime = std::chrono::duration_cast<std::chrono::duration<double>>(t1 - t2).count();
@@ -50,7 +52,7 @@ void Window::clearAndPollEvents() {
     glfwPollEvents();
 
     glClearColor(clearColor.red, clearColor.green, clearColor.blue, clearColor.alpha);
-    glClear(GL_CLEAR_BUFFER);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glfwGetWindowSize(window, &windowWidth, &windowHeight);
 
@@ -63,4 +65,8 @@ Window::~Window() {
 
 int Window::queryKeyState(int keyCode) {
     return glfwGetKey(window, keyCode);
+}
+
+void Window::setClearColor(Color _color){
+    clearColor = _color;
 }

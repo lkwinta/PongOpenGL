@@ -34,10 +34,13 @@ public:
     void clearAndPollEvents();
 
     int queryKeyState(int keyCode);
+
+    void setClearColor(Color _color);
+    GLFWwindow* window;
 private:
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
-    GLFWwindow* window;
+
 
     Color clearColor = Colors::Black;
 

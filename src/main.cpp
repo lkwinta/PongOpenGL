@@ -20,14 +20,13 @@ float ballVelocityY = 0.0f;
 Rectangle* leftPaddle;
 Rectangle* ball;
 Rectangle* rightPaddle;
-Rectangle* background;
 
 int main() {
     auto window = new Window(800, 600, "Pong OpenGL", false);
+    window->setClearColor(Color(40, 40, 40));
 
     Shader rectShader("shaders/vertexShader.vert", "shaders/fragmentShader.frag");
 
-    background = new Rectangle({800, 600}, {400, 300}, rectShader, Color(40, 40, 40));
     leftPaddle = new Rectangle({20, 100}, {50, 300}, rectShader, Colors::White);
     ball = new Rectangle({10, 10}, {400, 300}, rectShader, Colors::White);
     rightPaddle = new Rectangle({20, 100}, {750, 300}, rectShader, Colors::White);
@@ -50,7 +49,6 @@ int main() {
     while (window->isOpen()){
         window->clearAndPollEvents();
 
-        background->draw(window);
         leftPaddle->draw(window);
         rightPaddle->draw(window);
 
@@ -115,7 +113,6 @@ int main() {
     delete leftPaddle;
     delete ball;
     delete rightPaddle;
-    delete background;
 
     return 0;
 }
